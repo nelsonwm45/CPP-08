@@ -17,7 +17,7 @@ Iteration is still linear traversal of the structure, but it goes in sorted key 
       (1:A) (3:C) (5:E) ...       // map
 ```
 
-1) std::set<int> (values are the keys)
+**1) std::set<int> (values are the keys)**
 ```
             ( 7 )
            /     \
@@ -29,7 +29,7 @@ In-order traversal (sorted): 1 → 3 → 5 → 7 → 10 → 12
 Iterator walk: begin() … end() follows that order.
 ```
 
-2) std::map<int, char> (key → value pairs)
+**2) std::map<int, char> (key → value pairs)**
 ```
              ( 7 : 'g' )
              /         \
@@ -42,7 +42,7 @@ Access: m[5] == 'e', m.find(10) → node (10:'j')
 ```
 
 multiset / multimap = duplicates allowed
-3) std::multiset<int> (duplicates group together in key order)
+**3) std::multiset<int> (duplicates group together in key order)**
 ```
            ( 7 )
           /     \
@@ -54,7 +54,7 @@ In-order: 1 → 3 → 3 → 7 → 10 → 10
 equal_range(3) gives the contiguous range of both 3's.
 ```
 
-4) std::multimap<int, string> (key → many values)
+**4) std::multimap<int, string> (key → many values)**
 ```
              ( 7 : "g1" )
              /           \
