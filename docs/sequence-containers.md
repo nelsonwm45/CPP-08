@@ -14,6 +14,10 @@ A **sequence container** stores elements in a **linear order**. You control elem
 pos 0    pos 1   pos 2   pos 3
 ```
 
+The STL design separates containers (hold data) from algorithms (operate via iterators).
+
+So you use free algorithms like std::find, std::find_if, std::lower_bound, etc., on iterator ranges.
+
 ---
 
 ## 🧩 Common Member Functions
