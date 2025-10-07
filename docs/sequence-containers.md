@@ -8,6 +8,7 @@ A **sequence container** stores elements in a **linear order**. You control elem
 
 **Linear order** means elements are arranged in a single sequence. You accessed them with **position** and not by a key.
 
+### Index View
 ```
 [ a ] → [ b ] → [ c ] → [ d ]
   ^       ^       ^       ^

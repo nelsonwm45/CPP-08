@@ -6,6 +6,66 @@
 
 An **associative container** stores elements ordered by a **key** using a balanced tree (typically red‑black in C++98). You don’t control positions; the tree keeps elements **sorted by key**.
 
+Iteration is still linear traversal of the structure, but it goes in sorted key order (in-order traversal of the tree), not “insertion order” and not by numeric index.
+
+### Key View
+```
+          KEY SPACE
+   ...  1   3   5   7   10  12  ...
+        |   |   |   |   |   |
+      (1) (3) (5) (7) (10) (12)   // set
+      (1:A) (3:C) (5:E) ...       // map
+```
+
+1) std::set<int> (values are the keys)
+```
+            ( 7 )
+           /     \
+        ( 3 )    ( 10 )
+        /  \        \
+     ( 1 ) ( 5 )    ( 12 )
+
+In-order traversal (sorted): 1 → 3 → 5 → 7 → 10 → 12
+Iterator walk: begin() … end() follows that order.
+```
+
+2) std::map<int, char> (key → value pairs)
+```
+             ( 7 : 'g' )
+             /         \
+       ( 3 : 'c' )   ( 10 : 'j' )
+        /      \            \
+ ( 1 : 'a' ) ( 5 : 'e' )  ( 12 : 'l' )
+
+In-order by key: (1:'a') → (3:'c') → (5:'e') → (7:'g') → (10:'j') → (12:'l')
+Access: m[5] == 'e', m.find(10) → node (10:'j')
+```
+
+multiset / multimap = duplicates allowed
+3) std::multiset<int> (duplicates group together in key order)
+```
+           ( 7 )
+          /     \
+      ( 3 )    ( 10 )
+      /  \         \
+   ( 1 ) ( 3 )    ( 10 )
+
+In-order: 1 → 3 → 3 → 7 → 10 → 10
+equal_range(3) gives the contiguous range of both 3's.
+```
+
+4) std::multimap<int, string> (key → many values)
+```
+             ( 7 : "g1" )
+             /           \
+   ( 3 : "c1" )        ( 10 : "j1" )
+         \                 /     \
+      ( 3 : "c2" )   ( 10 : "j2" ) ( 12 : "l1" )
+
+Sorted by key, stable within equal keys (per insertion rules)
+equal_range(10) spans: (10:"j1") → (10:"j2")
+```
+
 ---
 
 ## 🧩 Common Member Functions (ordered associative)
