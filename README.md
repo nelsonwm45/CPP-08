@@ -1,14 +1,5 @@
 # 🗂️ C++ Containers — Index (C++98)
 
-Quick index to the container READMEs in this repo.
-
-> Suggested file layout:
->
-> * `docs/sequence-containers.md` → Sequence Containers
-> * `docs/associative-containers.md` → Associative Containers
-
----
-
 ## 📚 Contents
 
 * 📘 **Sequence Containers** — `std::vector`, `std::deque`, `std::list`
