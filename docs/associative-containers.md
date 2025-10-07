@@ -10,14 +10,26 @@ Iteration is still linear traversal of the structure, but it goes in sorted key 
 
 ### Key View
 ```
-          KEY SPACE
+          KEY SPACE (conceptual axis)
    ...  1   3   5   7   10  12  ...
         |   |   |   |   |   |
-      (1) (3) (5) (7) (10) (12)   // set
-      (1:A) (3:C) (5:E) ...       // map
+      (1) (3) (5) (7) (10) (12)   // set: node holds T (key)
+      (1:A) (3:C) (5:E) ...       // map: node holds pair<const K, V>
 ```
 
-**1) std::set<int> (values are the keys)**
+**1) std::set<T> (values are the keys)**
+- Each tree node holds one T (that is the key) plus tree bookkeeping (pointers to left/right/parent, maybe a color bit for RB-tree).
+- There’s no separate “key slot” and “value slot”—the value itself is the key
+```
+struct SetNode
+{
+    T        key;        // value == key
+    SetNode* left;
+    SetNode* right;
+    SetNode* parent;
+    /* rb-tree color, etc. */
+};
+```
 ```
             ( 7 )
            /     \
@@ -30,6 +42,19 @@ Iterator walk: begin() … end() follows that order.
 ```
 
 **2) std::map<int, char> (key → value pairs)**
+- std::map<Key, T>
+- Each node holds one std::pair<const Key, T>. The key and mapped value live together in the same node.
+- Again, not two external “spaces”—just one node containing both fields.
+```
+struct MapNode
+{
+    std::pair<const Key, T> kv;  // {key, value}
+    MapNode* left;
+    MapNode* right;
+    MapNode* parent;
+    /* rb-tree color, etc. */
+};
+```
 ```
              ( 7 : 'g' )
              /         \

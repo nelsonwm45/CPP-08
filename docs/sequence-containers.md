@@ -15,9 +15,9 @@ A **sequence container** stores elements in a **linear order**. You control elem
 pos 0    pos 1   pos 2   pos 3
 ```
 
-The STL design separates containers (hold data) from algorithms (operate via iterators).
+- The STL design separates containers (hold data) from algorithms (operate via iterators).
 
-So you use free algorithms like std::find, std::find_if, std::lower_bound, etc., on iterator ranges.
+- Use free algorithms like std::find, std::find_if, std::lower_bound, etc., on iterator ranges.
 
 ---
 
@@ -58,11 +58,44 @@ So you use free algorithms like std::find, std::find_if, std::lower_bound, etc.,
 * **Examples**: dynamic arrays, lookup tables, tight numeric loops.
 * **Why**: contiguous memory → cache‑friendly & fastest iteration.
 
+Contiguous dynamic array; elements live back-to-back in one block.
+```
+begin →  ┌───┬───┬────┬───┬───┬────┬───────────────┐
+         │ 7 │ 3 │ 10 │ 1 │ 5 │ 12│ (unused cap…) │
+         └───┴───┴────┴───┴───┴────┴───────────────┘  ← capacity
+                   ^size=6
+```
+- Storage: one contiguous heap buffer.
+- Iterators: random-access (pointer-like).
+- Reallocations can move everything to a new block when growing.
+
 ### `std::deque` 🚌
 
 * **Best for**: fast push/pop at **both ends** plus random access.
 * **Examples**: sliding windows, BFS queues with front/back ops.
 * **Why**: segmented blocks allow O(1) end operations.
+
+Segmented array: a “map” (small array) of pointers to fixed-size blocks; blocks are contiguous internally, but not as a whole.
+```
+map:   ┌──────┬──────┬──────┐
+       │ blk0 │ blk1 │ blk2 │
+       └───┬──┴───┬──┴───┬──┘
+           │      │      │
+blk0:  ┌───┬───┬───┬───┐
+       │ 7 │ 3 │   │   │ ...
+       └───┴───┴───┴───┘
+
+blk1:  ┌────┬───┬───┬───┐
+       │ 10 │ 1 │   │   │ ...
+       └────┴───┴───┴───┘
+
+blk2:  ┌───┬────┬───┬───┐
+       │ 5 │ 12 │   │   │ ...
+       └───┴────┴───┴───┘
+```
+- Storage: multiple small contiguous blocks managed by an index array.
+- Iterators: random-access, but elements aren’t in one big contiguous chunk.
+- Efficient push at both ends
 
 ### `std::list` 🔗
 
@@ -70,9 +103,18 @@ So you use free algorithms like std::find, std::find_if, std::lower_bound, etc.,
 * **Examples**: job queues that reorder, splicing between lists.
 * **Why**: doubly‑linked nodes → O(1) insert/erase **given iterator**.
 
+Doubly-linked nodes; each element is its own allocation with prev/next links.
+```
+NULL ← [7] ⇄ [3] ⇄ [10] ⇄ [1] ⇄ [5] ⇄ [12] → NULL
+```
+- Storage: scattered nodes on the heap; each node holds value + two pointers.
+- Iterators: bidirectional (no random access).
+- Insert/erase is O(1) given an iterator; finding a spot is O(n).
+
 ---
 
 ## ⚖️ Deque vs List vs Vector — Pros & Cons
+
 
 | Container  | Random Access |      Insert/Erase End |    Insert/Erase Middle | Memory locality |                                                 Iterator invalidation | Notes                                   |
 | ---------- | ------------- | --------------------: | ---------------------: | --------------: | --------------------------------------------------------------------: | --------------------------------------- |
@@ -80,6 +122,29 @@ So you use free algorithms like std::find, std::find_if, std::lower_bound, etc.,
 | **deque**  | ✅ O(1)        |      ✅ both ends O(1) |                 ❌ O(n) |    ⭐⭐ segmented |      End ops usually keep most iterators valid; middle can invalidate | No `reserve()`                          |
 | **list**   | ❌ O(n)        |                ✅ O(1) | ✅ O(1) (with iterator) |    ⭐ node‑based |                                 Iterators valid except at erased node | Has `splice/sort/merge/unique/reverse`  |
 
+### Explanation of the table
+1) Random Access : Can you jump to the nth element instantly?
+    - Vector/Deque: yes ([], it + n).
+    - List: no (must walk node by node).
+
+2) Insert/Erase End : How fast to push/pop at the back (and front for deque/list)?
+    - Vector: back is fast, front is slow.
+    - Deque: both ends fast.
+    - List: both ends fast.
+
+3) Insert/Erase Middle
+    - Vector/Deque: slow (shift many elements).
+    - List: fast if you already have the iterator (unlink/link nodes).
+
+4) Memory locality
+    - Vector: ⭐⭐⭐ contiguous (best for CPU cache).
+    - Deque: ⭐⭐ segmented blocks.
+    - List: ⭐ scattered nodes (pointer chasing).
+
+5) Iterator invalidation (what breaks your it?)
+    - Vector: reallocation or middle edits can invalidate many iterators.
+    - Deque: end edits often invalidate iterators—don’t keep them across pushes/pops.
+    - List: only the erased node’s iterator is invalid.
 ---
 
 ## 👣 Iterators: Do these containers have their own?
