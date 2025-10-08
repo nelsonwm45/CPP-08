@@ -58,14 +58,14 @@ pos 0    pos 1   pos 2   pos 3
 * **Examples**: dynamic arrays, lookup tables, tight numeric loops.
 * **Why**: contiguous memory → cache‑friendly & fastest iteration.
 
-Contiguous dynamic array; elements live back-to-back in one block.
+Contiguous dynamic array (elements live back-to-back in one block)
 ```
 begin →  ┌───┬───┬────┬───┬───┬────┬───────────────┐
          │ 7 │ 3 │ 10 │ 1 │ 5 │ 12│ (unused cap…) │
          └───┴───┴────┴───┴───┴────┴───────────────┘  ← capacity
                    ^size=6
 ```
-- Storage: one contiguous heap buffer.
+- Storage: one contiguous heap buffer. When capacity runs out, it allocates bigger block and move all elements
 - Iterators: random-access (pointer-like).
 - Reallocations can move everything to a new block when growing.
 
@@ -74,6 +74,17 @@ begin →  ┌───┬───┬────┬───┬───┬─
 * **Best for**: fast push/pop at **both ends** plus random access.
 * **Examples**: sliding windows, BFS queues with front/back ops.
 * **Why**: segmented blocks allow O(1) end operations.
+
+Segmented Array Visualiation
+```
+[ pointer map ]  -->  [block0] [block1] [block2] ...   // array of pointers
+                        |         |         |
+                        v         v         v
+                     elem...   elem...   elem...        // fixed-size chunks
+```
+- The Pointer Map will store the address of each block.
+- Each block will holds a fixed amount of value. (Fixed-size block)
+- Once block reached maximum, the pointer map will create another block to store the value.
 
 Segmented array: a “map” (small array) of pointers to fixed-size blocks; blocks are contiguous internally, but not as a whole.
 ```
@@ -124,27 +135,27 @@ NULL ← [7] ⇄ [3] ⇄ [10] ⇄ [1] ⇄ [5] ⇄ [12] → NULL
 
 ### Explanation of the table
 1) Random Access : Can you jump to the nth element instantly?
-    - Vector/Deque: yes ([], it + n).
-    - List: no (must walk node by node).
+    - `Vector`/`Deque`: yes ([], it + n).
+    - `List`: no (must walk node by node).
 
 2) Insert/Erase End : How fast to push/pop at the back (and front for deque/list)?
-    - Vector: back is fast, front is slow.
-    - Deque: both ends fast.
-    - List: both ends fast.
+    - `Vector`: back is fast, front is slow.
+    - `Deque`: both ends fast.
+    - `List`: both ends fast.
 
 3) Insert/Erase Middle
-    - Vector/Deque: slow (shift many elements).
-    - List: fast if you already have the iterator (unlink/link nodes).
+    - `Vector`/`Deque`: slow (shift many elements).
+    - `List`: fast if you already have the iterator (unlink/link nodes).
 
 4) Memory locality
-    - Vector: ⭐⭐⭐ contiguous (best for CPU cache).
-    - Deque: ⭐⭐ segmented blocks.
-    - List: ⭐ scattered nodes (pointer chasing).
+    - `Vector`: ⭐⭐⭐ contiguous (best for CPU cache).
+    - `Deque`: ⭐⭐ segmented blocks.
+    - `List`: ⭐ scattered nodes (pointer chasing).
 
 5) Iterator invalidation (what breaks your it?)
-    - Vector: reallocation or middle edits can invalidate many iterators.
-    - Deque: end edits often invalidate iterators—don’t keep them across pushes/pops.
-    - List: only the erased node’s iterator is invalid.
+    - `Vector`: reallocation or middle edits can invalidate many iterators.
+    - `Deque`: end edits often invalidate iterators—don’t keep them across pushes/pops.
+    - `List`: only the erased node’s iterator is invalid.
 ---
 
 ## 👣 Iterators: Do these containers have their own?
