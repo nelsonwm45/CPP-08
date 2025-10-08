@@ -17,6 +17,7 @@ Iteration is still linear traversal of the structure, but it goes in sorted key 
       (1:A) (3:C) (5:E) ...       // map: node holds pair<const K, V>
 ```
 
+
 **1) std::set<T> (values are the keys)**
 - Each tree node holds one T (that is the key) plus tree bookkeeping (pointers to left/right/parent, maybe a color bit for RB-tree).
 - There’s no separate “key slot” and “value slot”—the value itself is the key
@@ -40,6 +41,7 @@ struct SetNode
 In-order traversal (sorted): 1 → 3 → 5 → 7 → 10 → 12
 Iterator walk: begin() … end() follows that order.
 ```
+
 
 **2) std::map<int, char> (key → value pairs)**
 - std::map<Key, T>
@@ -66,7 +68,9 @@ In-order by key: (1:'a') → (3:'c') → (5:'e') → (7:'g') → (10:'j') → (1
 Access: m[5] == 'e', m.find(10) → node (10:'j')
 ```
 
+
 multiset / multimap = duplicates allowed
+
 **3) std::multiset<int> (duplicates group together in key order)**
 ```
            ( 7 )
@@ -90,6 +94,7 @@ equal_range(3) gives the contiguous range of both 3's.
 Sorted by key, stable within equal keys (per insertion rules)
 equal_range(10) spans: (10:"j1") → (10:"j2")
 ```
+
 
 ---
 

@@ -31,7 +31,7 @@ int main()
 		}
 
 		divider("easyfind() - [Vector Empty Container Test]", GREEN);
-		std::deque<int> emptyv;
+		std::vector<int> emptyv;
 		try
 		{
 			easyfind(emptyv, 1);

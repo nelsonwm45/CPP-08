@@ -27,14 +27,14 @@ class	ElementNotFoundException : public std::exception
 		}
 };
 
-class	EmptyContainerException : public std::exception
-{
-	public:
-		virtual const char *what() const throw()
-		{
-			return ("[Easyfind Exception]: Empty Container is not allowed!");
-		}
-};
+// class	EmptyContainerException : public std::exception
+// {
+// 	public:
+// 		virtual const char *what() const throw()
+// 		{
+// 			return ("[Easyfind Exception]: Empty Container is not allowed!");
+// 		}
+// };
 
 /** T is a container of integers
 
@@ -43,7 +43,6 @@ class	EmptyContainerException : public std::exception
 		- Integers
 
 	Returns iterator to first match, or throws exception if not found
- * @brief : This function only works for vector<int>, list<int>, deque<int>	[Sequence Container]
  * "typename" : telling the compiler that "It is a type"
  * If instantiate where "T = std::vector<int>", "return type = std::vector<int>::iterator"
  * 
