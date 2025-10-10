@@ -1,9 +1,3 @@
-# 📦 STL Container Adaptors — Visual README (CPP‑08)
-
-A compact, visual guide to `std::stack`, `std::queue`, and `std::priority_queue`—what they are, how they differ from sequence containers, what operations they forward to underneath, and how to choose the right backing container.
-
----
-
 ## 🧭 What is a *container adaptor*?
 
 A **container adaptor** is a thin wrapper that **enforces a policy** (LIFO, FIFO, or priority) on top of another container (the *underlying container*). It **restricts access** to match that policy.
