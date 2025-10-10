@@ -10,6 +10,10 @@
 
   👉 Read: **[Sequence Containers](docs/sequence-containers.md)**
 
+* 📘 **Sequence Containers** — `std::stack<T, Container>`, `std::queue<T, Container>`, `std::priority_queue<T, Container, Compare>`
+
+👉 Read: **[Sequence Containers](docs/container-adaptor.md)**
+
 * 📘 **Associative Containers** — `std::set`, `std::multiset`, `std::map`, `std::multimap`
 
   * What they are, common members, use‑cases
