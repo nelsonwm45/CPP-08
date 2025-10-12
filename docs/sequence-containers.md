@@ -135,12 +135,16 @@ NULL ← [7] ⇄ [3] ⇄ [10] ⇄ [1] ⇄ [5] ⇄ [12] → NULL
 
 ## ⚖️ Deque vs List vs Vector — Pros & Cons
 
-| Container  | Random Access |      Insert/Erase End |    Insert/Erase Middle | Memory locality |                                                 Iterator invalidation | Notes                                   |
-| ---------- | ------------- | --------------------: | ---------------------: | --------------: | --------------------------------------------------------------------: | --------------------------------------- |
-| **vector** | ✅ O(1)        | ✅ end: amortized O(1) |                 ❌ O(n) |  ⭐⭐⭐ contiguous | Reallocations invalidate **all**; middle ops invalidate from point on | Use `reserve()` to reduce reallocations |
-| **deque**  | ✅ O(1)        |      ✅ both ends O(1) |                 ❌ O(n) |    ⭐⭐ segmented |      End ops usually keep most iterators valid; middle can invalidate | No `reserve()`                          |
-| **list**   | ❌ O(n)        |                ✅ O(1) | ✅ O(1) (with iterator) |    ⭐ node‑based |                                 Iterators valid except at erased node | Has `splice/sort/merge/unique/reverse`  |
+This table is your cheat-sheet for choosing the right container.
 
+| Feature | `std::vector` 🧱 | `std::deque` 🚌 | `std::list` 🔗 |
+| :--- | :--- | :--- | :--- |
+| **Best For** | **General purpose**. Fast random access & end insertions. The default choice. | Queues, or when insertions/deletions at **both ends** are frequent. | Frequent insertions/deletions in the **middle** of the sequence. |
+| **Random Access** | ✅ **`O(1)`** - Fastest | ✅ **`O(1)`** - Fast, but with a slight overhead vs. vector. | ❌ **`O(n)`** - Must traverse the list. |
+| **Insertion/Deletion (End)** | **Amortized `O(1)`** at the back. `O(n)` at the front. | ✅ **`O(1)`** at **both** front and back. | ✅ **`O(1)`** at **both** front and back. |
+| **Insertion/Deletion (Middle)**| ❌ **`O(n)`** - Elements must be shifted. | ❌ **`O(n)`** - Elements must be shifted. | ✅ **`O(1)`** - *If you already have an iterator to the position.* |
+| **Memory Locality** | ⭐⭐⭐ **Excellent** (Contiguous) | ⭐⭐ **Good** (Contiguous in blocks) | ⭐ **Poor** (Scattered nodes) |
+| **Iterator Invalidation** | High. Insertion can invalidate **all** iterators. | Medium. End insertions may invalidate. Middle insertions invalidate all. | ✅ **Minimal**. Only iterators to the erased element are invalidated. |
 ### Explanation of the table
 
 1. Random Access : Can you jump to the nth element instantly?
