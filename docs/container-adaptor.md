@@ -4,8 +4,8 @@ A **container adaptor** is a thin wrapper that **enforces a policy** (LIFO, FIFO
 
 > Adaptors don’t define storage layout; they **forward** operations to an existing container.
 
-* `std::stack<T, Container>` → LIFO
-* `std::queue<T, Container>` → FIFO
+* `std::stack<T, Container>` → LIFO (Last In First Out)
+* `std::queue<T, Container>` → FIFO (First In First Out)
 * `std::priority_queue<T, Container, Compare>` → Heap with priority (max‑heap by default)
 
 ---
