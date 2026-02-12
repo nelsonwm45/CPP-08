@@ -4,7 +4,14 @@
 
 This module dives into the **Standard Template Library (STL)**. It covers **Templated Containers**, **Iterators**, and **Algorithms**.
 
-For a deeper dive into Sequence Containers (`vector`, `deque`, `list`), check out the [Sequence Containers Notes](docs/sequence-containers.md).
+## 📝 Overview
+
+This module dives into the **Standard Template Library (STL)**. It covers **Templated Containers**, **Iterators**, and **Algorithms**.
+
+For a deeper dive into the specific container types, check out the notes:
+*   [Sequence Containers](docs/sequence-containers.md) (`vector`, `deque`, `list`)
+*   [Associative Containers](docs/associative-containers.md) (`map`, `set`, `multimap`, `multiset`)
+*   [Container Adaptors](docs/container-adaptor.md) (`stack`, `queue`, `priority_queue`)
 
 ## 📂 Project Structure
 
