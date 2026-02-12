@@ -1,39 +1,69 @@
-# 🗂️ C++ Containers — Index (C++98)
+# CPP Module 08
 
-## 📚 Contents
+## 📝 Overview
 
-* 📘 **Sequence Containers** — `std::vector`, `std::deque`, `std::list`
+This module dives into the **Standard Template Library (STL)**. It covers **Templated Containers**, **Iterators**, and **Algorithms**.
 
-  * What they are, common members, use‑cases
-  * Deque vs List vs Vector (pros/cons, complexity, iterator categories)
-  * Why/when to use `<algorithm>` with iterators
+For a deeper dive into Sequence Containers (`vector`, `deque`, `list`), check out the [Sequence Containers Notes](docs/sequence-containers.md).
 
-  👉 Read: **[Sequence Containers](docs/sequence-containers.md)**
+## 📂 Project Structure
 
-* 📘 **Containers Adaptors** — `std::stack<T, Container>`, `std::queue<T, Container>`, `std::priority_queue<T, Container, Compare>`
+### ex00: Easy find
+Introduction to STL Algorithms.
+*   **`easyfind` Function Template**: 
+    *   Accepts a container strictly as type `T` and an integer `value`.
+    *   Uses `std::find` to locate the first occurrence of the value.
+    *   **Returns**: An iterator to the found element.
+    *   **Exception**: Throws `ElementNotFoundException` if the value is not found.
 
-  👉 Read: **[Containers Adaptors](docs/container-adaptor.md)**
+### ex01: Span
+Introduction to STL Containers and Algorithms.
+*   **`Span` Class**: manages a collection of numbers (using `std::vector<int>`).
+    *   **Construction**: initialized with a maximum capacity `N`.
+    *   **`addNumber(int)`**: Adds a single number. Throws `StorageIsFullException` if full.
+    *   **`addRange(it, it)`**: Adds a range of numbers using iterators (efficiently using `std::vector::insert`).
+    *   **`shortestSpan()`**: Finds the smallest difference between any two numbers.
+        *   Implementation: Sorts the vector and checks adjacent differences.
+    *   **`longestSpan()`**: Finds the largest difference between any two numbers.
+        *   Implementation: `max_element` - `min_element`.
+    *   **Exceptions**: Throws `InsufficientElementException` if there are fewer than 2 numbers.
 
-* 📘 **Associative Containers** — `std::set`, `std::multiset`, `std::map`, `std::multimap`
+### ex02: Mutated Abomination
+Introduction to Container Adapters and underlying containers.
+*   **`MutantStack<T>` Class Template**:
+    *   Inherits from `std::stack<T>`.
+    *   **Goal**: `std::stack` is a container adapter and does not expose iterators by default. This class exposes the underlying container (member `c`) to allow iteration.
+    *   **Iterators**: Provides `begin()`, `end()`, `rbegin()`, `rend()` (and their const versions).
+    *   **Usage**: Can be used exactly like a standard stack, but also allows you to iterate through it like a `std::list` or `std::deque`.
 
-  * What they are, common members, use‑cases
-  * Map vs Multiset vs Multimap vs Set (pros/cons, complexity)
-  * Iterator categories & traversal in sorted order
+## 🛠️ Compilation & Usage
 
-  👉 Read: **[Associative Containers](docs/associative-containers.md)**
+Each exercise has its own `Makefile`.
 
----
+### ex00
+```bash
+cd ex00
+make
+./easyfind
+```
 
-## ⚔️ Quick Cheat‑Sheet
+### ex01
+```bash
+cd ex01
+make
+./Span
+```
 
-* **Sequence** (position‑based): choose when you control order by **position** and need fast **random access** (`vector`/`deque`) or **stable middle insert/erase** (`list`).
-* **Associative** (key‑ordered): choose when you need data **sorted by key** and **O(log n)** key lookup (`set/map`).
+### ex02
+```bash
+cd ex02
+make
+./MutatedStack
+```
 
----
-
-## 📎 Notes / C++98
-
-* Keep template definitions in headers (or included `.tpp`).
-* `std::sort` requires random access (works with `vector`/`deque`, not `list`).
-* `map::operator[]` may **insert**; use `find` to probe without insertion.
-* Iterator categories: `vector/deque` → RandomAccess, `list`/associative → Bidirectional.
+## 🧹 Housekeeping
+To clean up object files and executables in any directory:
+```bash
+make clean
+make fclean
+```
